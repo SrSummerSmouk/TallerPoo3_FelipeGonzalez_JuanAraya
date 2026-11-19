@@ -54,7 +54,7 @@ public class HombreLobo extends Monstruo implements Mordedor, Furioso{
 	@Override
 	public double potencialCaza() {
 		// TODO Auto-generated method stub
-		return ferocidad*faseLunar/4.0+velocidad*4.0;
+		return ferocidad*faseLunar/4.0+velocidad/4.0;
 	}
 
 	@Override
