@@ -1,14 +1,39 @@
 package TallerPoo3_FelipeGonzalez_JuanAraya;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SistemaImpl {
 	private static ArrayList<Monstruo> monstruos = new ArrayList<>();
 	private static ArrayList<Jugador> jugadores = new ArrayList<>();
+	private static ArrayList<Monstruo> monstruosUsados = new ArrayList<>();
+	private static ArrayList<HistorialJugado> historial = new ArrayList<>();
+	private static ArrayList<Minijuego> minijuegos = new ArrayList<>();
+	private static ArrayList<String> minijuegosJugados = new ArrayList<>();
+	private static Jugador jugadorActual;
+	private static int puntajeSesion = 0;
 
 	public static void crearJugador(String[] partes) {
 		// TODO Auto-generated method stub
+		if (partes == null || partes.length != 2) {
+			return;
+		}
+		String jugadorString = partes[0];
+		if (jugadorString.equalsIgnoreCase("")) {
+			return;
+		}
 
+		try {
+			int puntajesMax = Integer.parseInt(partes[1]);
+			if (puntajesMax < 0) {
+				return;
+
+			}
+			jugadores.add(new Jugador(jugadorString, puntajesMax));
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			return;
+		}
 	}
 
 	private static boolean enRango(int valor, int min, int max) {
@@ -87,12 +112,67 @@ public class SistemaImpl {
 
 	}
 
+	public static void iniciarSesion(String nombre) {
+		String limpio = nombre.trim();
+		Jugador encontrado = null;
+		for (int i = 0; i < jugadores.size(); i++) {
+			if (jugadores.get(i).getNombreString().equalsIgnoreCase(limpio)) {
+				encontrado = jugadores.get(i);
+				break;
+			}
+		}
+		if (encontrado != null) {
+			jugadorActual = encontrado;
+		} else {
+			jugadorActual = new Jugador(limpio, 0);
+			jugadores.add(jugadorActual);
+		}
+		puntajeSesion = 0;
+		monstruosUsados.clear();
+		historial.clear();
+	}
+
+	public static void inicializarMinijuegos() {
+		minijuegos.clear();
+		minijuegos.add(new CarreraCementerio());
+		minijuegos.add(new Cazacalabazas());
+		minijuegos.add(new LanzamientoLapidas());
+		minijuegos.add(new SobrevivirAmanecer());
+		minijuegosJugados.clear();
+	}
+	
+	private static ArrayList<Monstruo> mostrarMonsterLibres() {
+		ArrayList<Monstruo> mDisponible=new ArrayList<>();
+		for (Monstruo monstruo : monstruos) {
+			if (!monstruosUsados.contains(monstruo)) {
+				mDisponible.add(monstruo);
+				
+			}
+		}return mDisponible;
+	}
+
 	public static ArrayList<Monstruo> getMonstruos() {
 		return monstruos;
 	}
 
 	public static ArrayList<Jugador> getJugadores() {
 		return jugadores;
+	}
+
+	public static Jugador getJugadorActual() {
+		return jugadorActual;
+	}
+
+	public static int getPuntajeSesion() {
+		return puntajeSesion;
+	}
+
+	public static ArrayList<Monstruo> getMonstruosUsados() {
+		return monstruosUsados;
+	}
+
+	public static ArrayList<HistorialJugado> getHistorial() {
+		return historial;
 	}
 
 }

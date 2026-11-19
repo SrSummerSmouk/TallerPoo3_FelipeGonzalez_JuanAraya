@@ -22,8 +22,14 @@ public class Main {
 			Scanner scanner = new Scanner(new File(txt));
 			while (scanner.hasNextLine()) {
 				String linea = scanner.nextLine();
-				String[] partes = linea.split(";");
-				sistema.crearMonstruo(partes);
+				if (linea.trim().equals("")) {
+					System.out.println("Linea vacia descartada");
+					continue;
+				}
+				String[] partes = linea.split(";", -1);
+				if (!sistema.crearMonstruo(partes)) {
+					System.out.println("Linea descartada: " + linea);
+				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -31,7 +37,7 @@ public class Main {
 			System.out.println("No se encontro el archivo: " + txt);
 		}
 	}
-
+	//este esta pendiente.
 	private static void cargarRegistros(SistemaImpl sistema, String txt) {
 		try {
 			Scanner scanner = new Scanner(new File(txt));
