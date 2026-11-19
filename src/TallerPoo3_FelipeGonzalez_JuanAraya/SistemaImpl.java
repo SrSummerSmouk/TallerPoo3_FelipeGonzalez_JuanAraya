@@ -1,7 +1,6 @@
 package TallerPoo3_FelipeGonzalez_JuanAraya;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SistemaImpl {
 	private static ArrayList<Monstruo> monstruos = new ArrayList<>();
