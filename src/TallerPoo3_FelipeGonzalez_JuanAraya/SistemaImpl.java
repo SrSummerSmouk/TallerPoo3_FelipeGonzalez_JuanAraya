@@ -139,15 +139,34 @@ public class SistemaImpl {
 		minijuegos.add(new SobrevivirAmanecer());
 		minijuegosJugados.clear();
 	}
-	
+
 	private static ArrayList<Monstruo> mostrarMonsterLibres() {
-		ArrayList<Monstruo> mDisponible=new ArrayList<>();
+		ArrayList<Monstruo> mDisponible = new ArrayList<>();
 		for (Monstruo monstruo : monstruos) {
 			if (!monstruosUsados.contains(monstruo)) {
 				mDisponible.add(monstruo);
-				
+
 			}
-		}return mDisponible;
+		}
+		return mDisponible;
+	}
+
+	private static void registrarJugada(Minijuego game, Monstruo m, String habilidadEnUso, int puntaje) {
+		minijuegosJugados.add(game.getNombre());
+		monstruosUsados.add(m);
+		puntajeSesion += puntaje;
+		if (habilidadEnUso == null || habilidadEnUso.trim().equals("")) {
+			habilidadEnUso = "Ninguna";
+		}
+		historial.add(new HistorialJugado(game.getNombre(), m.toString(), habilidadEnUso, puntaje));
+	}
+
+	public static double calcularPotencial(Minijuego game, Monstruo m) {
+		return game.calcularPotencial(m);
+	}
+
+	public static boolean minijuegoYaJugado(String nombreMinijuego) {
+		return minijuegosJugados.contains(nombreMinijuego);
 	}
 
 	public static ArrayList<Monstruo> getMonstruos() {
@@ -172,6 +191,14 @@ public class SistemaImpl {
 
 	public static ArrayList<HistorialJugado> getHistorial() {
 		return historial;
+	}
+
+	public static ArrayList<Minijuego> getMinijuegos() {
+		return minijuegos;
+	}
+
+	public static ArrayList<String> getMinijuegosJugados() {
+		return minijuegosJugados;
 	}
 
 }
