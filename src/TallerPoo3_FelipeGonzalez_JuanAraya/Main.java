@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -86,6 +87,20 @@ public class Main {
 		System.out.println("adios");
 	}
 
+	private static void verRanking(SistemaImpl sistema) {
+		// TODO Auto-generated method stub
+		ArrayList<Jugador> rank = sistema.getRank();
+		System.out.println("\n--- ranking de jugadores ---");
+		if (rank.isEmpty()) {
+			System.out.println("no tenemos jugadores registrados.");
+			return;
+		}
+		for (int i = 0; i < rank.size(); i++) {
+			Jugador jugador = rank.get(i);
+			System.out.println((i + 1) + ". " + jugador.toString() + " | puntaje: " + jugador.getPuntajeMaximo());
+		}
+	}
+
 	private static void verHistorial(SistemaImpl sistema) {
 		// TODO Auto-generated method stub
 		LinkedList<HistorialJugado> histortialLinkedList = sistema.getHistorial();
@@ -94,10 +109,12 @@ public class Main {
 			System.out.println("no hay jugadas registradas en esta sesion.");
 			return;
 		}
-		for(int i = 0 ; i<histortialLinkedList.size();i++) {
-			HistorialJugado h=histortialLinkedList.get(i);
-			System.out.println((i+1)+". "+h.getNombreMinijuegoString()+" | monstruo: "+ h.getMonsterUseString()+" | habilidad: "+ h.getHabilidadUsadaString()+" | puntaje: "+h.getPuntaje());
-		}System.out.println("puntaje actual de la sesion (acumulada): "+ sistema.getPuntajeSesion());
+		for (int i = 0; i < histortialLinkedList.size(); i++) {
+			HistorialJugado h = histortialLinkedList.get(i);
+			System.out.println((i + 1) + ". " + h.getNombreMinijuegoString() + " | monstruo: " + h.getMonsterUseString()
+					+ " | habilidad: " + h.getHabilidadUsadaString() + " | puntaje: " + h.getPuntaje());
+		}
+		System.out.println("puntaje actual de la sesion (acumulada): " + sistema.getPuntajeSesion());
 	}
 
 	private static void verCatalogo(SistemaImpl sistema) {
