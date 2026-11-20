@@ -17,13 +17,13 @@ public class SistemaImpl {
 		if (partes == null || partes.length != 2) {
 			return;
 		}
-		String jugadorString = partes[0];
+		String jugadorString = partes[0].trim();
 		if (jugadorString.equalsIgnoreCase("")) {
 			return;
 		}
 
 		try {
-			int puntajesMax = Integer.parseInt(partes[1]);
+			int puntajesMax = Integer.parseInt(partes[1].trim());
 			if (puntajesMax < 0) {
 				return;
 
@@ -110,7 +110,7 @@ public class SistemaImpl {
 		}
 
 	}
-
+	//iniciar sesion
 	public static void iniciarSesion(String nombre) {
 		String limpio = nombre.trim();
 		Jugador encontrado = null;
@@ -130,6 +130,18 @@ public class SistemaImpl {
 		monstruosUsados.clear();
 		historial.clear();
 	}
+	//cerrar sesion
+	public static boolean finalizarSesion() {
+		if (jugadorActual == null) {
+			return false;
+		}
+		if (puntajeSesion > jugadorActual.getPuntajeMaximo()) {
+			jugadorActual.setPuntajeMaximo(puntajeSesion);
+
+			return true;
+		}
+		return false;
+	}
 
 	public static void inicializarMinijuegos() {
 		minijuegos.clear();
@@ -140,7 +152,7 @@ public class SistemaImpl {
 		minijuegosJugados.clear();
 	}
 
-	private static ArrayList<Monstruo> mostrarMonsterLibres() {
+	public static ArrayList<Monstruo> mostrarMonsterLibres() {
 		ArrayList<Monstruo> mDisponible = new ArrayList<>();
 		for (Monstruo monstruo : monstruos) {
 			if (!monstruosUsados.contains(monstruo)) {
@@ -151,7 +163,14 @@ public class SistemaImpl {
 		return mDisponible;
 	}
 
-	private static void registrarJugada(Minijuego game, Monstruo m, String habilidadEnUso, int puntaje) {
+	public static int calcularPuntaje(double ptcial, boolean habilidadEfectiva) {
+		if (habilidadEfectiva) {
+			return (int) Math.round(ptcial * 10.0 * 1.5);
+		}
+		return (int) Math.round(ptcial * 10.0);
+	}
+
+	public static void registrarJugada(Minijuego game, Monstruo m, String habilidadEnUso, int puntaje) {
 		minijuegosJugados.add(game.getNombre());
 		monstruosUsados.add(m);
 		puntajeSesion += puntaje;
@@ -160,6 +179,27 @@ public class SistemaImpl {
 		}
 		historial.add(new HistorialJugado(game.getNombre(), m.toString(), habilidadEnUso, puntaje));
 	}
+	//get rank ordenado
+	public static ArrayList<Jugador> getRank() {
+		ArrayList<Jugador> aux = new ArrayList<>();
+		for (int i = 0; i < jugadores.size(); i++) {
+			aux.add(jugadores.get(i));
+		}
+		for (int i = 0; i < aux.size()-1; i++) {
+			for (int j = 0; j < aux.size()-i-1; j++) {
+				Jugador aJugador=aux.get(j);
+				Jugador bJugador=aux.get(j+1);
+				if (bJugador.getPuntajeMaximo()>aJugador.getPuntajeMaximo()) {
+					aux.set(j, bJugador);
+					aux.set(j+1, aJugador);
+					
+				}
+				
+			}
+		}
+		return aux;
+	}
+
 
 	public static double calcularPotencial(Minijuego game, Monstruo m) {
 		return game.calcularPotencial(m);

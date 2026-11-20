@@ -5,6 +5,9 @@ package TallerPoo3_FelipeGonzalez_JuanAraya;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -13,6 +16,7 @@ public class Main {
 		System.out.println("Probando");
 		SistemaImpl sistemaImpl = new SistemaImpl();
 		cargarMonster(sistemaImpl, "Monstruos.txt");
+		cargarRegistros(sistemaImpl, "Registros.txt");
 
 	}
 
@@ -27,7 +31,7 @@ public class Main {
 					continue;
 				}
 				String[] partes = linea.split(";", -1);
-				if (!sistema.crearMonstruo(partes)) {
+				if (!SistemaImpl.crearMonstruo(partes)) {
 					System.out.println("Linea descartada: " + linea);
 				}
 			}
@@ -37,19 +41,40 @@ public class Main {
 			System.out.println("No se encontro el archivo: " + txt);
 		}
 	}
-	//este esta pendiente.
+
+	// este esta pendiente.
 	private static void cargarRegistros(SistemaImpl sistema, String txt) {
 		try {
 			Scanner scanner = new Scanner(new File(txt));
 			while (scanner.hasNextLine()) {
 				String linea = scanner.nextLine();
+				if (linea.trim().equals("")) {
+					System.out.println("Linea vacia descartada");
+					continue;
+				}
 				String[] partes = linea.split(";");
-				sistema.crearJugador(partes);
+				SistemaImpl.crearJugador(partes);
 			}
 			scanner.close();
 
 		} catch (FileNotFoundException e) {
 			// TODO: handle exception
+			System.out.println("No se encontro el archivo: " + txt);
+
+		}
+	}
+
+	private static void guardarRegistros(String txt) {
+		try {
+			FileWriter fw = new FileWriter(txt);
+			ArrayList<Jugador> lista = SistemaImpl.getJugadores();
+			for (int i = 0; i < lista.size(); i++) {
+				Jugador j = lista.get(i);
+				fw.write(j.getNombreString() + ";" + j.getPuntajeMaximo() + "\n");
+			}
+			fw.close();
+		} catch (IOException e) {
+			System.out.println("Error al guardar en " + txt);
 		}
 	}
 
