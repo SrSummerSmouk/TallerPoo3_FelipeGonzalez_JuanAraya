@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -80,6 +81,22 @@ public class Main {
 	    System.out.println("adios");
 	}
 	
+	private static void verCatalogo(SistemaImpl sistema) {
+		// TODO Auto-generated method stub
+		ArrayList<Monstruo> catalogo = sistema.getMonstruos();
+		System.out.println("---- Catalogo de monstruos ----\n");
+		for (int i = 0; i < catalogo.size(); i++) {
+			Monstruo monstruo = catalogo.get(i);
+			System.out.println((i+1)+". "+ monstruo.toString());
+		}
+	}
+
+	private static void jugarMinijuego(SistemaImpl sistema) {
+		// TODO Auto-generated method stub
+
+		
+	}
+
 	private static String pedirNombre() {
 	    while (true) {
 	        System.out.print("Ingrese su nombre de usuario: ");
