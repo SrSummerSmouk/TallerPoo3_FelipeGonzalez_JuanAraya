@@ -28,7 +28,7 @@ public class Zombie extends Monstruo implements Mordedor, Regenerable{
 	@Override
 	public String getTipo() {
 
-		return "Zombie";
+		return "Zombi";
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class Vampiro extends Monstruo implements Mordedor, Volador{
 	@Override
 	public double potencialLapidas() {
 		// TODO Auto-generated method stub
-		return fuerza+velocidad/4.0;
+		return fuerza+velocidadDeVuelo/4.0;
 	}
 	@Override
 	public double potencialAmanecer() {

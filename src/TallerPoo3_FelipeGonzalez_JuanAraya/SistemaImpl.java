@@ -191,7 +191,7 @@ public class SistemaImpl {
 		if (habilidadEnUso == null || habilidadEnUso.trim().equals("")) {
 			habilidadEnUso = "Ninguna";
 		}
-		historial.add(new HistorialJugado(game.getNombre(), m.toString(), habilidadEnUso, puntaje));
+		historial.add(new HistorialJugado(game.getNombre(), m.getTipo(), habilidadEnUso, puntaje));
 	}
 	//get rank ordenado
 	public ArrayList<Jugador> getRank() {
@@ -201,17 +201,28 @@ public class SistemaImpl {
 		}
 		for (int i = 0; i < aux.size()-1; i++) {
 			for (int j = 0; j < aux.size()-i-1; j++) {
-				Jugador aJugador=aux.get(j);
-				Jugador bJugador=aux.get(j+1);
-				if (bJugador.getPuntajeMaximo()>aJugador.getPuntajeMaximo()) {
-					aux.set(j, bJugador);
-					aux.set(j+1, aJugador);
-					
+				Jugador a = aux.get(j);
+				Jugador b = aux.get(j + 1);
+				boolean swap;
+				if (b.getPuntajeMaximo() > a.getPuntajeMaximo()) {
+				    swap = true;
+				} else if (b.getPuntajeMaximo() == a.getPuntajeMaximo()) {
+				    swap = a.getNombreString().compareToIgnoreCase(b.getNombreString()) > 0;
+				} else {
+				    swap = false;
+				}
+				if (swap) {
+				    aux.set(j, b);
+				    aux.set(j + 1, a);
 				}
 				
 			}
 		}
 		return aux;
+	}
+	
+	public boolean esJugadorNuevo() {
+	    return jugadorEsNuevo;
 	}
 
 

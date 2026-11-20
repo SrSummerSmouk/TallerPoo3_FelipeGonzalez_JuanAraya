@@ -11,13 +11,103 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+	
+	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		System.out.println("Probando");
-		SistemaImpl sistemaImpl = new SistemaImpl();
-		cargarMonster(sistemaImpl, "Monstruos.txt");
-		cargarRegistros(sistemaImpl, "Registros.txt");
+	    SistemaImpl sistema = new SistemaImpl();
+	    sistema.inicializarMinijuegos();
 
+	    cargarMonster(sistema, "Monstruos.txt");
+	    cargarRegistros(sistema, "Registros.txt");
+
+	    System.out.println(sistema.getMonstruos().size() + " monstruos cargados");
+	    System.out.println(sistema.getJugadores().size() + " jugadores cargados");
+
+	    if (sistema.getMonstruos().isEmpty()) {
+	        System.out.println("No hay monstruos validos. Apagando");
+	        return;
+	    }
+
+	    boolean salir = false;
+	    while (!salir) {
+	        String nombre = pedirNombre();
+	        sistema.iniciarSesion(nombre);
+	        if (sistema.esJugadorNuevo()) {
+	            System.out.println("¡Bienvenido, " + nombre + "! Es tu primera vez jugando.");
+	        } else {
+	            System.out.println("¡Bienvenido de vuelta, " + nombre + "! Récord: "
+	                + sistema.getJugadorActual().getPuntajeMaximo() + " pts.");
+	        }
+
+	        boolean sesion = true;
+	        while (sesion) {
+	            System.out.println("--- MENÚ PRINCIPAL (" + nombre + ") ---");
+	            System.out.println("1) Jugar un minijuego");
+	            System.out.println("2) Ver catálogo de monstruos");
+	            System.out.println("3) Ver historial de la sesión");
+	            System.out.println("4) Ver ranking de jugadores");
+	            System.out.println("5) Terminar sesión");
+	            System.out.println("6) Salir");
+	            int op = leerEntero(1, 6);
+	            if (op == -1) continue;
+
+	            switch (op) {
+	                case 1: jugarMinijuego(sistema); 
+	                break;
+	                case 2: verCatalogo(sistema); 
+	                break;
+	                case 3: verHistorial(sistema); 
+	                break;
+	                case 4: verRanking(sistema); 
+	                break;
+	                case 5:
+	                    System.out.println("Sesión terminada. Puntaje total: " + sistema.getPuntajeSesion() + " puntos.");
+	                    System.out.println(sistema.finalizarSesion());
+	                    guardarRegistros(sistema, "Registros.txt");
+	                    System.out.println("Registros guardados.");
+	                    sesion = false;
+	                    break;
+	                case 6:
+	                    System.out.println(sistema.finalizarSesion());
+	                    guardarRegistros(sistema, "Registros.txt");
+	                    sesion = false;
+	                    salir = true;
+	                    break;
+	            }
+	        }
+	    }
+	    System.out.println("adios");
+	}
+	
+	private static String pedirNombre() {
+	    while (true) {
+	        System.out.print("Ingrese su nombre de usuario: ");
+	        String s = scanner.nextLine().trim();
+	        if (s.isEmpty()) { System.out.println("No puede estar vacío."); 
+	        continue; 
+	        }
+	        if (s.contains(";")) { System.out.println("No puede contener ';'.");
+	        continue; 
+	        }
+	        return s;
+	    }
+	}
+
+	private static int leerEntero(int min, int max) {
+	    System.out.print("> ");
+	    String s = scanner.nextLine().trim();
+	    try {
+	        int v = Integer.parseInt(s);
+	        if (v < min || v > max) {
+	            System.out.println("Opción fuera de rango.");
+	            return -1;
+	        }
+	        return v;
+	    } catch (NumberFormatException e) {
+	        System.out.println("Debe ingresar un número.");
+	        return -1;
+	    }
 	}
 
 	private static void cargarMonster(SistemaImpl sistema, String txt) {
@@ -31,7 +121,7 @@ public class Main {
 					continue;
 				}
 				String[] partes = linea.split(";", -1);
-				if (!SistemaImpl.crearMonstruo(partes)) {
+				if (!sistema.crearMonstruo(partes)) {
 					System.out.println("Linea descartada: " + linea);
 				}
 			}
@@ -53,7 +143,7 @@ public class Main {
 					continue;
 				}
 				String[] partes = linea.split(";");
-				SistemaImpl.crearJugador(partes);
+				sistema.crearJugador(partes);
 			}
 			scanner.close();
 
@@ -64,10 +154,10 @@ public class Main {
 		}
 	}
 
-	private static void guardarRegistros(String txt) {
+	private static void guardarRegistros(SistemaImpl sistema, String txt) {
 		try {
 			FileWriter fw = new FileWriter(txt);
-			ArrayList<Jugador> lista = SistemaImpl.getJugadores();
+			ArrayList<Jugador> lista = sistema.getJugadores();
 			for (int i = 0; i < lista.size(); i++) {
 				Jugador j = lista.get(i);
 				fw.write(j.getNombreString() + ";" + j.getPuntajeMaximo() + "\n");
