@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
@@ -84,6 +84,20 @@ public class Main {
 			}
 		}
 		System.out.println("adios");
+	}
+
+	private static void verHistorial(SistemaImpl sistema) {
+		// TODO Auto-generated method stub
+		LinkedList<HistorialJugado> histortialLinkedList = sistema.getHistorial();
+		System.out.println("\n--- Historial de sesion ---");
+		if (histortialLinkedList.isEmpty()) {
+			System.out.println("no hay jugadas registradas en esta sesion.");
+			return;
+		}
+		for(int i = 0 ; i<histortialLinkedList.size();i++) {
+			HistorialJugado h=histortialLinkedList.get(i);
+			System.out.println((i+1)+". "+h.getNombreMinijuegoString()+" | monstruo: "+ h.getMonsterUseString()+" | habilidad: "+ h.getHabilidadUsadaString()+" | puntaje: "+h.getPuntaje());
+		}System.out.println("puntaje actual de la sesion (acumulada): "+ sistema.getPuntajeSesion());
 	}
 
 	private static void verCatalogo(SistemaImpl sistema) {
