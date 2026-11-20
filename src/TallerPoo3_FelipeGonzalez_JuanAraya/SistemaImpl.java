@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SistemaImpl {
-	private static ArrayList<Monstruo> monstruos = new ArrayList<>();
-	private static ArrayList<Jugador> jugadores = new ArrayList<>();
-	private static ArrayList<Monstruo> monstruosUsados = new ArrayList<>();
-	private static LinkedList<HistorialJugado> historial = new LinkedList<>();
-	private static ArrayList<Minijuego> minijuegos = new ArrayList<>();
-	private static ArrayList<String> minijuegosJugados = new ArrayList<>();
-	private static Jugador jugadorActual;
-	private static int puntajeSesion = 0;
+	private ArrayList<Monstruo> monstruos = new ArrayList<>();
+	private ArrayList<Jugador> jugadores = new ArrayList<>();
+	private ArrayList<Monstruo> monstruosUsados = new ArrayList<>();
+	private LinkedList<HistorialJugado> historial = new LinkedList<>();
+	private ArrayList<Minijuego> minijuegos = new ArrayList<>();
+	private ArrayList<String> minijuegosJugados = new ArrayList<>();
+	private Jugador jugadorActual;
+	private int puntajeSesion = 0;
 
 	public void crearJugador(String[] partes) {
 		// TODO Auto-generated method stub
@@ -36,7 +36,7 @@ public class SistemaImpl {
 		}
 	}
 
-	private static boolean enRango(int valor, int min, int max) {
+	private boolean enRango(int valor, int min, int max) {
 		return valor >= min && valor <= max;
 	}
 
@@ -111,6 +111,8 @@ public class SistemaImpl {
 		}
 
 	}
+	
+	private boolean jugadorEsNuevo;
 	//iniciar sesion
 	public void iniciarSesion(String nombre) {
 	    String limpio = nombre.trim();
