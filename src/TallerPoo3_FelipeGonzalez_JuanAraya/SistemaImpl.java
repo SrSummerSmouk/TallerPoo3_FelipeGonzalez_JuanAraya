@@ -113,35 +113,46 @@ public class SistemaImpl {
 	}
 	//iniciar sesion
 	public void iniciarSesion(String nombre) {
-		String limpio = nombre.trim();
-		Jugador encontrado = null;
-		for (int i = 0; i < jugadores.size(); i++) {
-			if (jugadores.get(i).getNombreString().equalsIgnoreCase(limpio)) {
-				encontrado = jugadores.get(i);
-				break;
-			}
-		}
-		if (encontrado != null) {
-			jugadorActual = encontrado;
-		} else {
-			jugadorActual = new Jugador(limpio, 0);
-			jugadores.add(jugadorActual);
-		}
-		puntajeSesion = 0;
-		monstruosUsados.clear();
-		historial.clear();
+	    String limpio = nombre.trim();
+	    Jugador encontrado = null;
+	    for (int i = 0; i < jugadores.size(); i++) {
+	        if (jugadores.get(i).getNombreString().equalsIgnoreCase(limpio)) {
+	            encontrado = jugadores.get(i);
+	            break;
+	        }
+	    }
+	    if (encontrado != null) {
+	        jugadorActual = encontrado;
+	        jugadorEsNuevo = false;
+	    } else {
+	        jugadorActual = new Jugador(limpio, 0);
+	        jugadorEsNuevo = true;
+	    }
+	    puntajeSesion = 0;
+	    monstruosUsados.clear();
+	    historial.clear();
+	    minijuegosJugados.clear();
 	}
 	//cerrar sesion
-	public boolean finalizarSesion() {
-		if (jugadorActual == null) {
-			return false;
-		}
-		if (puntajeSesion > jugadorActual.getPuntajeMaximo()) {
-			jugadorActual.setPuntajeMaximo(puntajeSesion);
-
-			return true;
-		}
-		return false;
+	public String finalizarSesion() {
+	    if (jugadorActual == null) {
+	        return "No hay sesion activa.";
+	    }
+	    if (puntajeSesion == 0 || historial.isEmpty()) {
+	        return "No jugaste ningún minijuego, no se guarda registro.";
+	    }
+	    if (jugadorEsNuevo) {
+	        jugadorActual.setPuntajeMaximo(puntajeSesion);
+	        jugadores.add(jugadorActual);
+	        jugadorEsNuevo = false;
+	        return "¡Nuevo jugador registrado con " + puntajeSesion + " puntos!";
+	    }
+	    if (puntajeSesion > jugadorActual.getPuntajeMaximo()) {
+	        jugadorActual.setPuntajeMaximo(puntajeSesion);
+	        return "Superaste tu récord. Nuevo record: " + puntajeSesion + " puntos.";
+	    }
+	    return "No superaste tu record (" + jugadorActual.getPuntajeMaximo()
+	            + ")";
 	}
 
 	public void inicializarMinijuegos() {
