@@ -1,18 +1,19 @@
 package TallerPoo3_FelipeGonzalez_JuanAraya;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SistemaImpl {
 	private static ArrayList<Monstruo> monstruos = new ArrayList<>();
 	private static ArrayList<Jugador> jugadores = new ArrayList<>();
 	private static ArrayList<Monstruo> monstruosUsados = new ArrayList<>();
-	private static ArrayList<HistorialJugado> historial = new ArrayList<>();
+	private static LinkedList<HistorialJugado> historial = new LinkedList<>();
 	private static ArrayList<Minijuego> minijuegos = new ArrayList<>();
 	private static ArrayList<String> minijuegosJugados = new ArrayList<>();
 	private static Jugador jugadorActual;
 	private static int puntajeSesion = 0;
 
-	public static void crearJugador(String[] partes) {
+	public void crearJugador(String[] partes) {
 		// TODO Auto-generated method stub
 		if (partes == null || partes.length != 2) {
 			return;
@@ -40,7 +41,7 @@ public class SistemaImpl {
 	}
 
 	// basicamente crea el objeto y retorna true, si no se pudo crear, retorna false
-	public static boolean crearMonstruo(String[] partes) {
+	public boolean crearMonstruo(String[] partes) {
 		// TODO Auto-generated method stub
 		String tipo = partes[0].trim();
 		try {
@@ -111,7 +112,7 @@ public class SistemaImpl {
 
 	}
 	//iniciar sesion
-	public static void iniciarSesion(String nombre) {
+	public void iniciarSesion(String nombre) {
 		String limpio = nombre.trim();
 		Jugador encontrado = null;
 		for (int i = 0; i < jugadores.size(); i++) {
@@ -131,7 +132,7 @@ public class SistemaImpl {
 		historial.clear();
 	}
 	//cerrar sesion
-	public static boolean finalizarSesion() {
+	public boolean finalizarSesion() {
 		if (jugadorActual == null) {
 			return false;
 		}
@@ -143,7 +144,7 @@ public class SistemaImpl {
 		return false;
 	}
 
-	public static void inicializarMinijuegos() {
+	public void inicializarMinijuegos() {
 		minijuegos.clear();
 		minijuegos.add(new CarreraCementerio());
 		minijuegos.add(new Cazacalabazas());
@@ -152,7 +153,7 @@ public class SistemaImpl {
 		minijuegosJugados.clear();
 	}
 
-	public static ArrayList<Monstruo> mostrarMonsterLibres() {
+	public ArrayList<Monstruo> mostrarMonsterLibres() {
 		ArrayList<Monstruo> mDisponible = new ArrayList<>();
 		for (Monstruo monstruo : monstruos) {
 			if (!monstruosUsados.contains(monstruo)) {
@@ -163,14 +164,14 @@ public class SistemaImpl {
 		return mDisponible;
 	}
 
-	public static int calcularPuntaje(double ptcial, boolean habilidadEfectiva) {
+	public int calcularPuntaje(double ptcial, boolean habilidadEfectiva) {
 		if (habilidadEfectiva) {
 			return (int) Math.round(ptcial * 10.0 * 1.5);
 		}
 		return (int) Math.round(ptcial * 10.0);
 	}
 
-	public static void registrarJugada(Minijuego game, Monstruo m, String habilidadEnUso, int puntaje) {
+	public void registrarJugada(Minijuego game, Monstruo m, String habilidadEnUso, int puntaje) {
 		minijuegosJugados.add(game.getNombre());
 		monstruosUsados.add(m);
 		puntajeSesion += puntaje;
@@ -180,7 +181,7 @@ public class SistemaImpl {
 		historial.add(new HistorialJugado(game.getNombre(), m.toString(), habilidadEnUso, puntaje));
 	}
 	//get rank ordenado
-	public static ArrayList<Jugador> getRank() {
+	public ArrayList<Jugador> getRank() {
 		ArrayList<Jugador> aux = new ArrayList<>();
 		for (int i = 0; i < jugadores.size(); i++) {
 			aux.add(jugadores.get(i));
@@ -201,43 +202,43 @@ public class SistemaImpl {
 	}
 
 
-	public static double calcularPotencial(Minijuego game, Monstruo m) {
+	public double calcularPotencial(Minijuego game, Monstruo m) {
 		return game.calcularPotencial(m);
 	}
 
-	public static boolean minijuegoYaJugado(String nombreMinijuego) {
+	public boolean minijuegoYaJugado(String nombreMinijuego) {
 		return minijuegosJugados.contains(nombreMinijuego);
 	}
 
-	public static ArrayList<Monstruo> getMonstruos() {
+	public ArrayList<Monstruo> getMonstruos() {
 		return monstruos;
 	}
 
-	public static ArrayList<Jugador> getJugadores() {
+	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
 	}
 
-	public static Jugador getJugadorActual() {
+	public Jugador getJugadorActual() {
 		return jugadorActual;
 	}
 
-	public static int getPuntajeSesion() {
+	public int getPuntajeSesion() {
 		return puntajeSesion;
 	}
 
-	public static ArrayList<Monstruo> getMonstruosUsados() {
+	public ArrayList<Monstruo> getMonstruosUsados() {
 		return monstruosUsados;
 	}
 
-	public static ArrayList<HistorialJugado> getHistorial() {
+	public LinkedList<HistorialJugado> getHistorial() {
 		return historial;
 	}
 
-	public static ArrayList<Minijuego> getMinijuegos() {
+	public ArrayList<Minijuego> getMinijuegos() {
 		return minijuegos;
 	}
 
-	public static ArrayList<String> getMinijuegosJugados() {
+	public ArrayList<String> getMinijuegosJugados() {
 		return minijuegosJugados;
 	}
 
