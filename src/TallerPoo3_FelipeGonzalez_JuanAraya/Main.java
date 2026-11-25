@@ -95,8 +95,8 @@ public class Main {
 			return;
 		}
 		for (int i = 0; i < rank.size(); i++) {
-			Jugador jugador = rank.get(i);
-			System.out.println((i + 1) + ". " + jugador.toString() + " | puntaje: " + jugador.getPuntajeMaximo());
+		    Jugador jugador = rank.get(i);
+		    System.out.println((i + 1) + ". " + jugador.getNombreString() + " " + jugador.getPuntajeMaximo());
 		}
 	}
 
@@ -117,29 +117,55 @@ public class Main {
 	}
 
 	private static void verCatalogo(SistemaImpl sistema) {
-		// TODO Auto-generated method stub
-		ArrayList<Monstruo> catalogo = sistema.getMonstruos();
-		System.out.println("---- Catalogo de monstruos ----\n");
-		for (int i = 0; i < catalogo.size(); i++) {
-			Monstruo monstruo = catalogo.get(i);
-			System.out.println((i + 1) + ". " + monstruo.toString());
-		}
+	    ArrayList<Monstruo> catalogo = sistema.getMonstruos();
+	    ArrayList<Monstruo> usados = sistema.getMonstruosUsados();
+	    System.out.println("--Catalogo de monstruos--");
+	    for (int i = 0; i < catalogo.size(); i++) {
+	        Monstruo m = catalogo.get(i);
+
+	        String estado = "";
+	        if (usados.contains(m)) {
+	            estado = " USADO";
+	        }
+
+	        System.out.println((i + 1) + ". " + m + estado
+	                + " | Habilidades: " + habilidadesDe(m));
+	    }
+	}
+	
+	private static String habilidadesDe(Monstruo m) {
+	    ArrayList<String> hs = new ArrayList<>();
+	    if (m instanceof Mordedor) hs.add("Morder");
+	    if (m instanceof Volador) hs.add("Volar");
+	    if (m instanceof Regenerable) hs.add("Regenerarse");
+	    if (m instanceof Furioso) hs.add("Enfurecerse");
+
+	    String resultado = "";
+	    for (int i = 0; i < hs.size(); i++) {
+	        if (i > 0) resultado += ", ";
+	        resultado += hs.get(i);
+	    }
+	    return resultado;
 	}
 
 	private static void jugarMinijuego(SistemaImpl sistema) {
 		// TODO Auto-generated method stub
 		ArrayList<Minijuego> jMinijuegos = sistema.getMinijuegos();
 		for (int i = 0; i < jMinijuegos.size(); i++) {
-			Minijuego mj = jMinijuegos.get(i);
-			String estado = "";
-			if (sistema.minijuegoYaJugado(mj.getNombre())) {
-				estado = " -YA JUGADO-";
-			}
-			System.out.println((i + 1) + ". " + mj.getNombre() + " | " + mj.getDescripcion() + estado);
+		    Minijuego mj = jMinijuegos.get(i);
+		    String estado = "";
+		    if (sistema.minijuegoYaJugado(mj.getNombre())) {
+		        estado = " -YA JUGADO-";
+		    }
+		    System.out.println((i + 1) + ". " + mj.getNombre() + " | " + mj.getDescripcion() + estado);
 		}
-		int opJuego = leerEntero(1, jMinijuegos.size());
+		System.out.println("0) Volver");
+		int opJuego = leerEntero(0, jMinijuegos.size());
 		if (opJuego == -1) {
-			return;
+		    return;
+		}
+		if (opJuego == 0) {
+		    return;
 		}
 		Minijuego juegoElegido = jMinijuegos.get(opJuego - 1);
 		if (sistema.minijuegoYaJugado(juegoElegido.getNombre())) {
@@ -153,13 +179,20 @@ public class Main {
 		}
 		System.out.println("\n---Monstruos disponibles---");
 		for (int i = 0; i < libresArrayList.size(); i++) {
-			System.out.println((i + 1) + ". " + libresArrayList.get(i).toString());
+		    System.out.println((i + 1) + ". " + libresArrayList.get(i).toString());
 		}
-		int opMonstruo = leerEntero(1, jMinijuegos.size());
+		System.out.println("0) Volver");
+		int opMonstruo = leerEntero(0, libresArrayList.size());
 		if (opMonstruo == -1) {
-			return;
+		    return;
+		}
+		if (opMonstruo == 0) {
+		    return;
 		}
 		Monstruo monstruoElegido = libresArrayList.get(opMonstruo - 1);
+		System.out.println("Te comes un dulce de dudosa procedencia...");
+		double potencial = sistema.calcularPotencial(juegoElegido, monstruoElegido);
+		System.out.printf("Potencial para %s: %.2f%n", juegoElegido.getNombre(), potencial);
 		ArrayList<String> habilidades = new ArrayList<>();
 		ArrayList<String> mensajesDeAccion = new ArrayList<>();
 		if (monstruoElegido instanceof Mordedor) {
@@ -178,7 +211,7 @@ public class Main {
 			habilidades.add("furioso");
 			mensajesDeAccion.add(((Furioso) monstruoElegido).enfurecerse());
 		}
-		String habilidadString = "none";
+		String habilidadString = "Ninguna";
 
 		boolean efectiva = false;
 		if (!habilidades.isEmpty()) {
@@ -202,11 +235,9 @@ public class Main {
 				}
 			}
 		}
-		double potencial = sistema.calcularPotencial(juegoElegido, monstruoElegido);
 		int puntaje = sistema.calcularPuntaje(potencial, efectiva);
 		sistema.registrarJugada(juegoElegido, monstruoElegido, habilidadString, puntaje);
-
-		System.out.println("potencial: " + potencial + " | puntaje: " + puntaje);
+		System.out.println(">> Puntaje obtenido: " + puntaje + " puntos");
 
 	}
 
