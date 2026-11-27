@@ -22,4 +22,5 @@ Menu en consola de comandos - posee
 
 Clonar el repositorio
 ```bash
-
+git clone https://github.com/SrSummerSmouk/TallerPoo3_FelipeGonzalez_JuanAraya.git
+cd TallerPoo3_FelipeGonzalez_JuanAraya
