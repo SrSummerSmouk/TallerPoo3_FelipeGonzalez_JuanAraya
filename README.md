@@ -3,8 +3,8 @@ Taller 3 de POO - UCN - Semestre 2 - Año 2026
 
 
 ## Integrantes:
-*- Felipe González Zuleta | 21.776.516-1 | github username:`SrSummerSmouk`              | Carrera: Ingeniería en Tecnologías de la Información |
-*- Juan Araya Larraguibel | 21.566.260-8 | github username:`JuanIgnacioArayaLarraguibel` | Carrera: Ingeniería en Tecnologías de la Información |
+* - Felipe González Zuleta | 21.776.516-1 | github username:`SrSummerSmouk`              | Carrera: Ingeniería en Tecnologías de la Información |
+* - Juan Araya Larraguibel | 21.566.260-8 | github username:`JuanIgnacioArayaLarraguibel` | Carrera: Ingeniería en Tecnologías de la Información |
 
 ## Archivos de datos
 * `Monstruos.txt`: define los monstruos y sus atributos (las líneas vacías o con datos inválidos se descartan al cargar).
